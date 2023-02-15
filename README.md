@@ -7,5 +7,4 @@ The clustp4.c is a packet-oriented C code that receive and clusterize points in 
 
 The clustering_random_points.c generates and clusterize n random two-dimensional points in k centroids. A centroid starts as random point, and it's coordinates are defined by the averages of the coordinates of the points that belong to that centroid.
 
-![clust gif](https://user-images.githubusercontent.com/118558122/219136503-ead9497b-bb71-4989-90ef-c10215e0257d.gif)
-
+![gif2](https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif)
