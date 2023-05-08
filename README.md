@@ -1,5 +1,5 @@
 # clustering_algorithms
-This is a H-means based clustering algorithm. n is the number of two-dimensional points and k is the number of centroids.
+This is a K-means based clustering algorithm. n is the number of two-dimensional points and k is the number of centroids.
 
 This program works as a packet-oriented clustering algorithm. A initial number of points and centroids can be defined in the start of the execution. If the initial number of points is lower than the number of centroids, the program will wait until the number of centroids and points is at least equal to start processing.
 
