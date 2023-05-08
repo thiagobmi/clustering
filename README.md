@@ -1,10 +1,17 @@
 # clustering_algorithms
-These are two k-means based clustering algorithms. n is the number of two-dimensional points and k is the number of centroids.
+This is a H-means based clustering algorithm. n is the number of two-dimensional points and k is the number of centroids.
 
-The clustp4.c is a packet-oriented C code that receive and clusterize points in k centroids. It also creates files to store data.
+This program works as a packet-oriented clustering algorithm. A initial number of points and centroids can be defined in the start of the execution. If the initial number is higher than the number of centroids, the program will wait until the number of centroids and points is at least equal to start processing.
+
+After finishing the initial clustering, the program will be awaiting for more points to start clustering again.
+The points coordinates must be writen in the input as:
+
+```bash
+  n x1 y1 x2 y2 x3 y3 ... xn yn
+```
+
+With n being the number of points to be added to the next clustering.
 
 ![grafico](https://user-images.githubusercontent.com/118558122/219134302-e03d4c72-2a2d-4667-a496-fdc1c834d8d5.gif)
-
-The clustering_random_points.c generates and clusterize n random two-dimensional points in k centroids. A centroid starts as a random point, and it's coordinates are defined by the averages of the coordinates of the points that belong to that centroid.
 
 ![gif2](https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif)
