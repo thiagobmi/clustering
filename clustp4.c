@@ -10,18 +10,18 @@ struct ponto
     int *Y;
 };
 
-typedef struct ponto Ponto;
+typedef struct ponto point_t;
 
-struct centroF
+struct centroids
 {
     float *X;
     float *Y;
 };
 
-typedef struct centroF CentroF;
+typedef struct centroids centroid_t;
 
 // Verificações de memória
-int verificaMemCentroF(CentroF *centro)
+int checkMemCentroid(centroid_t *centro)
 {
     if (centro == NULL)
     {
@@ -31,539 +31,505 @@ int verificaMemCentroF(CentroF *centro)
     }
 }
 
-int verificaMemPonto(Ponto *pontos)
+int checkMemPointArr(point_t *points)
 {
-    if (pontos == NULL)
+    if (points == NULL)
     {
-        printf("ERRO\n");
+        printf("ERRO point arr\n");
         exit(0);
         return 0;
     }
 }
 
-int verificaMemint(int *arr)
+int checkMemIntArr(int *arr)
 {
     if (arr == NULL)
     {
-        printf("ERRO\n");
+        printf("ERRO int arr\n");
         exit(0);
         return 0;
     }
 }
 
-int verificaMemfloat(float *arr)
+int checkMemFloatArr(float *arr)
 {
     if (arr == NULL)
     {
-        printf("ERRO\n");
+        printf("ERRO float arr\n");
         exit(0);
         return 0;
     }
 }
 
-int verificaMemFloatP(float **arr)
+int checkMemFloatMatrix(float **arr)
 {
 
     if (arr == NULL)
     {
-        printf("ERRO\n");
+        printf("ERRO float matrix\n");
         exit(0);
         return 0;
     }
 }
 
-int verificaMemIntP(int **arr)
+int checkMemIntMatrix(int **arr)
 {
 
     if (arr == NULL)
     {
-        printf("ERRO\n");
+        printf("ERRO int matrix\n");
         exit(0);
         return 0;
     }
 }
 
 // Alocação de memória
-Ponto *alocamemoria(int n)
+float *newFloatArr(int size)
 {
+    float *arr = (float *)malloc(sizeof(float) * size);
+    checkMemFloatArr(arr);
+    return arr;
+}
 
-    Ponto *pontos = (Ponto *)malloc(sizeof(Ponto) * n);
-    verificaMemPonto(pontos);
+float **newFloatMatrix(int rows, int cols)
+{
+    float **arr = (float **)malloc(sizeof(float *) * rows);
+
+    for (int i = 0; i < rows; i++)
+        arr[i] = newFloatArr(cols);
+
+    return arr;
+}
+point_t *newPointArr(int n)
+{
+    point_t *points = (point_t *)malloc(sizeof(point_t) * n);
+    checkMemPointArr(points);
 
     for (int i = 0; i < n; i++)
     {
-        pontos[i].X = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[i].X);
+        points[i].X = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[i].X);
     }
     for (int i = 0; i < n; i++)
     {
-        pontos[i].Y = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[i].Y);
+        points[i].Y = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[i].Y);
     }
-    return pontos;
+    return points;
 }
 
-CentroF *alocaMemCentroF(int k)
+centroid_t *newCentroidArr(int k)
 {
-
-    CentroF *centroF = malloc(sizeof(float) * k * 5);
-    verificaMemCentroF(centroF);
+    centroid_t *centroids = malloc(sizeof(float) * k * 5);
+    checkMemCentroid(centroids);
 
     for (int i = 0; i < k; i++)
     {
-        centroF[i].X = (float *)malloc(sizeof(float));
-        verificaMemfloat(centroF[i].X);
+        centroids[i].X = (float *)malloc(sizeof(float));
+        checkMemFloatArr(centroids[i].X);
     }
     for (int i = 0; i < k; i++)
     {
-        centroF[i].Y = (float *)malloc(sizeof(float));
-        verificaMemfloat(centroF[i].Y);
+        centroids[i].Y = (float *)malloc(sizeof(float));
+        checkMemFloatArr(centroids[i].Y);
     }
-    return centroF;
+    return centroids;
 }
 
-Ponto *realocaMemoria(Ponto *pontos, int vart, int n)
+point_t *reallocPointArr(point_t *points, int current_size, int n)
 {
+    points = realloc(points, (sizeof(point_t) * n));
+    checkMemPointArr(points);
 
-    pontos = realloc(pontos, (sizeof(Ponto) * n));
-    verificaMemPonto(pontos);
-
-    for (int i = vart; i < n; i++)
+    for (int i = current_size; i < n; i++)
     {
-        pontos[i].X = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[i].X);
-        pontos[i].Y = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[i].Y);
+        points[i].X = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[i].X);
+        points[i].Y = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[i].Y);
     }
 
-    return pontos;
+    return points;
+}
+
+void resetIntArr(int *arr, int size)
+{
+    for (int i = 0; i < size; i++)
+        arr[i] = 0;
 }
 
 // Liberação de memória;
-void liberamemoria(float *menordistancia, float **distancias, int k)
+void freeFloatMatrix(float **arr, int k)
 {
-
     for (int i = 0; i < k; i++)
-        free(distancias[i]);
+        free(arr[i]);
 
-    free(menordistancia);
-    free(distancias);
+    free(arr);
+}
+void freeMemory(float *shorter_distance, float **distance, int k)
+{
+    freeFloatMatrix(distance, k);
+    free(shorter_distance);
 }
 
-// Atribuição dos valores como pontos
-Ponto *geraPontos(Ponto *pontos, int n, int nsoma)
+// Atribuição dos valores como points
+
+point_t *generateRandomPoints(point_t *points, int n, int n_sum)
 {
 
-    for (n; n < nsoma; n++)
+    srand(time(NULL));
+    for (n; n < n_sum; n++)
     {
-        scanf("%d %d", pontos[n].X, pontos[n].Y);
+        *points[n].X = -2000 + rand() % 5000;
+        *points[n].Y = -2000 + rand() % 5000;
     }
 
-    // for (n; n < nsoma; n++)
-    // {
-
-    //     *pontos[n].X = -2000 + rand() % 5000;
-    //     *pontos[n].Y = -2000 + rand() % 5000;
-    // }
-
-    return pontos;
+    return points;
 }
 
-// Randomiza os centros em algum ponto
-int randomizaCentros(int pontoaleatorio, int *vetrand, int contrand, int n)
-{
-    pontoaleatorio = rand() % n;
-
-    for (int j = 0; j < contrand; j++)
-        while (pontoaleatorio == vetrand[j])
-            pontoaleatorio = rand() % n;
-
-    return pontoaleatorio;
-}
-
-float **calculadistancias(float **distancias, Ponto *pontos, Ponto *centros, int n, int k)
+point_t *readPoints(point_t *points, int n, int n_sum)
 {
 
-    for (int j = 0; j < k; j++)
+    for (n; n < n_sum; n++)
     {
-        for (int i = 0; i < n; i++)
-            distancias[j][i] = sqrt(pow(((float)*pontos[i].X - (float)*centros[j].X), 2) + pow(((float)*pontos[i].Y - (float)*centros[j].Y), 2));
+        scanf("%d %d", points[n].X, points[n].Y);
     }
 
-    return distancias;
+    return points;
 }
 
-float **calculadistanciasFloat(float **distancias, Ponto *pontos, CentroF *centroF, int n, int k)
+point_t *addPointsToArray(point_t *points, int n, int n_sum, int flag)
 {
+    if (flag == 0)
+        return generateRandomPoints(points, n, n_sum);
+    else
+        return readPoints(points, n, n_sum);
+}
+
+// Randomiza os old_centroids em algum ponto
+int getRandomPointIndex(int random_point_index, int *rand_arr, int count_rand, int n)
+{
+    random_point_index = rand() % n;
+
+    for (int j = 0; j < count_rand; j++)
+        while (random_point_index == rand_arr[j])
+            random_point_index = rand() % n;
+
+    return random_point_index;
+}
+
+float **getDistances(point_t *points, centroid_t *centroids, int n, int k)
+{
+
+    float **distance = newFloatMatrix(k, n);
 
     for (int j = 0; j < k; j++)
     {
         for (int i = 0; i < n; i++)
         {
-
-            distancias[j][i] = sqrt(pow((*pontos[i].X - *centroF[j].X), 2) + pow((*pontos[i].Y - *centroF[j].Y), 2));
+            distance[j][i] = sqrt(pow((*points[i].X - *centroids[j].X), 2) + pow((*points[i].Y - *centroids[j].Y), 2));
         }
     }
-    return distancias;
+    return distance;
 }
 
-float *calculaMenorDistancia(float **distancias, float *menordistancia, int n, int k)
+float *getShorterDistances(float **distance, int n, int k)
 {
+    int shorter;
+    float *shorter_distance = newFloatArr(n);
 
-    int menor = 999999;
     for (int i = 0; i < n; i++)
     {
-        menor = 999999;
         for (int j = 0; j < k; j++)
         {
-            if (distancias[j][i] < menor)
+            if (distance[j][i] < shorter || j == 0)
             {
-                menordistancia[i] = distancias[j][i];
-                menor = distancias[j][i];
+                shorter_distance[i] = distance[j][i];
+                shorter = distance[j][i];
             }
         }
     }
-    return menordistancia;
+    return shorter_distance;
 }
 
-void calculaMedia(float *mediaX, float *mediaY, Ponto *pontos, int **gruposR, int *contador, CentroF *centroF, CentroF *centroF2, int k, Ponto *centrosmain)
+void calculateNewCentroids(point_t *points, centroid_t *centroids, centroid_t *old_centroids, int **cluster, double *sumX, double *sumY, int *count, int k)
 {
+    int i, j;
 
-    for (int i = 0; i < k; i++)
-        for (int j = 0; j < contador[i]; j++)
+    for (i = 0; i < k; i++)
+        for (int j = 0; j < count[i]; j++)
         {
-            mediaX[i] += (float)*pontos[gruposR[i][j]].X;
-            mediaY[i] += (float)*pontos[gruposR[i][j]].Y;
+            sumX[i] += *points[cluster[i][j]].X;
+            sumY[i] += *points[cluster[i][j]].Y;
         }
 
+    for (i = 0; i < k; i++)
+    {
+        *centroids[i].X = (sumX[i] / count[i]);
+        *centroids[i].Y = (sumY[i] / count[i]);
+
+        if (count[i] == 0)
+        {
+            *centroids[i].X = *old_centroids[i].X;
+            *centroids[i].Y = *old_centroids[i].Y;
+        }
+    }
+
+    for (i = 0; i < k; i++)
+    {
+        *old_centroids[i].X = *centroids[i].Y;
+        *old_centroids[i].Y = *centroids[i].Y;
+    }
+
+    resetIntArr(count, k);
+}
+
+double *newDoubleArr(int size)
+{
+    double *arr = (double *)malloc(sizeof(double) * size);
+    return arr;
+}
+
+void resetSum(double *sumX, double *sumY, int k)
+{
     for (int i = 0; i < k; i++)
     {
-        *centroF[i].X = (mediaX[i] / (float)contador[i]);
-        *centroF[i].Y = (mediaY[i] / (float)contador[i]);
-        if (contador[i] == 0)
-        {
-            *centroF[i].X = *centrosmain[i].X;
-            *centroF[i].Y = *centrosmain[i].Y;
-        }
+        sumX[i] = 0;
+        sumY[i] = 0;
     }
 }
 
-void zeraMedia(float *mediaX, float *mediaY, int k)
+int *newIntArr(int size)
 {
-    for (int i = 0; i < k; i++)
-    {
-        mediaX[i] = 0;
-        mediaY[i] = 0;
-    }
+    int *arr = (int *)malloc(sizeof(int) * size);
+    checkMemIntArr(arr);
+    return arr;
 }
 
-int **atribuipontos(float **distancias, float *menordistancia, int *contador, int **arrponto, int n, int k)
+int **newIntMatrix(int rows, int cols)
 {
+    int **arr = (int **)malloc(sizeof(int) * rows * 2);
+    for (int i = 0; i < rows; i++)
+        arr[i] = newIntArr(cols);
+
+    return arr;
+}
+
+int **newCluster(int *count, int k)
+{
+
+    int **cluster = (int **)malloc(sizeof(int *) * k);
+    checkMemIntMatrix(cluster);
+
+    for (int i = 0; i < k; i++)
+        cluster[i] = newIntArr(count[i]);
+
+    return cluster;
+}
+
+point_t *receiveAdditionalPoints(int n, int k, int flag)
+{
+
+    int current_size = 0, additional_size = 0;
+    point_t *pointArr = newPointArr(n);
+    while (n < k)
+    {
+        if (current_size > 0)
+            pointArr = reallocPointArr(pointArr, current_size, n);
+
+        pointArr = addPointsToArray(pointArr, current_size, n, flag);
+        scanf("%d", &additional_size);
+        current_size = n;
+        n += additional_size;
+    }
+
+    pointArr = reallocPointArr(pointArr, current_size, n);
+    pointArr = addPointsToArray(pointArr, current_size, n, flag);
+
+    return pointArr;
+}
+
+void printFile(centroid_t *centroids, point_t *points, int **cluster, char *str, char *nome, int *count, int numfile, int n, int k)
+{
+
+    sprintf(str, "%d", numfile);
+    strcat(nome, str);
+    FILE *pont_arq = fopen(nome, "w");
+
+    for (int i = 0; i < k; i++)
+    {
+        fprintf(pont_arq, "%.2f;%.2f;0\n", *centroids[i].X, *centroids[i].Y);
+        for (int j = 0; j < count[i]; j++)
+            fprintf(pont_arq, "%d;%d;1\n", *points[cluster[i][j]].X, *points[cluster[i][j]].Y);
+    }
+
+    fclose(pont_arq);
+}
+
+int **assignArrays(float **distance, float *shorter_distance, int *count, int n, int k)
+{
+    int **is_shorter_distance = newIntMatrix(k, n);
     for (int j = 0; j < k; j++)
         for (int i = 0; i < n; i++)
         {
-
-            if (distancias[j][i] == menordistancia[i])
+            if (distance[j][i] == shorter_distance[i])
             {
-                contador[j]++;
-                arrponto[j][i] = i;
+                count[j]++;
+                is_shorter_distance[j][i] = i;
             }
             else
-                arrponto[j][i] = -20;
+                is_shorter_distance[j][i] = -20;
         }
-
-    return arrponto;
+    return is_shorter_distance;
 }
 
-int **agrupaPontos(Ponto *pontos, int n, int k, int *contador, Ponto *centrosmain)
+centroid_t *randomizeCentroids(point_t *points, int n, int k)
 {
-    int i, j, pontoaleatorio, vetrand[k], contrand = 0;
-    float menor;
-
-    float *menordistancia = (float *)malloc(sizeof(float) * n);
-    verificaMemfloat(menordistancia);
-
-    Ponto *centros = alocamemoria(k);
-
-    float **distancias = (float **)malloc(sizeof(float) * n);
-    verificaMemFloatP(distancias);
-
-    int **arrponto = (int **)malloc(sizeof(int) * k * 2);
-    verificaMemIntP(arrponto);
-
-    for (i = 0; i < k; i++)
-    {
-        arrponto[i] = (int *)malloc(sizeof(int) * n);
-        verificaMemint(arrponto[i]);
-    }
-
-    for (i = 0; i < k; i++)
-    {
-        distancias[i] = (float *)malloc(sizeof(float) * n);
-        verificaMemfloat(distancias[i]);
-    }
-
-    for (i = 0; i < k; i++)
-    {
-        pontoaleatorio = randomizaCentros(pontoaleatorio, vetrand, contrand, n);
-        contrand++;
-        vetrand[i] = pontoaleatorio;
-        *centros[i].X = *pontos[pontoaleatorio].X;
-        *centrosmain[i].X = *pontos[pontoaleatorio].X;
-        *centros[i].Y = *pontos[pontoaleatorio].Y;
-        *centrosmain[i].Y = *pontos[pontoaleatorio].Y;
-    }
-
-    distancias = calculadistancias(distancias, pontos, centros, n, k);
-
-    menordistancia = calculaMenorDistancia(distancias, menordistancia, n, k);
-
-    for (i = 0; i < k; i++)
-        contador[i] = 0;
-
-    for (j = 0; j < k; j++)
-        for (i = 0; i < n; i++)
-        {
-
-            if (distancias[j][i] == menordistancia[i])
-            {
-                contador[j]++;
-                arrponto[j][i] = i;
-            }
-            else
-                arrponto[j][i] = -20;
-        }
-
-    liberamemoria(menordistancia, distancias, k);
-
-    return arrponto;
-}
-
-int **reagrupapontos(CentroF *centroF, Ponto *pontos, int k, int n, int *contador, int *contVerifica)
-{
-
-    int i, j, menor = 9999;
-
-    float *menordistancia = (float *)malloc(sizeof(float) * n);
-    verificaMemfloat(menordistancia);
-
-    float **distancias = (float **)malloc(sizeof(float) * n);
-    verificaMemFloatP(distancias);
-
-    int **arrponto = (int **)malloc(sizeof(int) * k * 2);
-    verificaMemIntP(arrponto);
-
-    for (i = 0; i < k; i++)
-    {
-        arrponto[i] = (int *)malloc(sizeof(int) * n);
-        verificaMemint(arrponto[i]);
-    }
-
-    for (i = 0; i < k; i++)
-    {
-        distancias[i] = (float *)malloc(sizeof(float) * n);
-        verificaMemfloat(distancias[i]);
-    }
-
-    distancias = calculadistanciasFloat(distancias, pontos, centroF, n, k);
-
-    menordistancia = calculaMenorDistancia(distancias, menordistancia, n, k);
-
-    for (i = 0; i < k; i++)
-    {
-        contVerifica[i] = contador[i];
-        contador[i] = 0;
-    }
-    arrponto = atribuipontos(distancias, menordistancia, contador, arrponto, n, k);
-
-    liberamemoria(menordistancia, distancias, k);
-
-    return arrponto;
-}
-
-int **atribuiVetores(int **gruposR, int **grupos, int *contador, int n, int k)
-{
-    int contapontos = 0;
+    unsigned int count_rand = 0, random_point_index;
+    centroid_t *old_centroids = newCentroidArr(k);
+    unsigned int *rand_arr = newIntArr(k);
 
     for (int i = 0; i < k; i++)
     {
-        contapontos = 0;
-        while (contapontos < contador[i])
+        random_point_index = getRandomPointIndex(random_point_index, rand_arr, count_rand, n);
+        count_rand++;
+        rand_arr[i] = random_point_index;
+        *old_centroids[i].X = *points[random_point_index].X;
+        *old_centroids[i].Y = *points[random_point_index].Y;
+    }
+    free(rand_arr);
+    return old_centroids;
+}
+
+int **processData(centroid_t *centroids, point_t *points, int *count, int n, int k)
+{
+    unsigned int i, j;
+    float **distance;
+    float *shorter_distance;
+    int **is_shorter_distance;
+
+    distance = getDistances(points, centroids, n, k);
+    shorter_distance = getShorterDistances(distance, n, k);
+    is_shorter_distance = assignArrays(distance, shorter_distance, count, n, k);
+    freeMemory(shorter_distance, distance, k);
+    return is_shorter_distance;
+}
+
+int **createCluster(int **is_shorter_distance, int *count, int n, int k)
+{
+    int **cluster = newCluster(count, k);
+    int point_count = 0;
+    for (int i = 0; i < k; i++)
+    {
+        point_count = 0;
+        while (point_count < count[i])
             for (int j = 0; j < n; j++)
             {
-                if (grupos[i][j] != -20)
+                if (is_shorter_distance[i][j] != -20)
                 {
-                    gruposR[i][contapontos] = grupos[i][j];
-                    contapontos++;
+                    cluster[i][point_count] = is_shorter_distance[i][j];
+                    point_count++;
                 }
             }
     }
 
-    return gruposR;
+    return cluster;
 }
 
-Ponto *adicionapontos(Ponto *pontos, int n, int nplus)
+point_t *addPoints(point_t *points, int n, int n_plus, int flag)
 {
+    unsigned int n_sum = n + n_plus;
 
-    int nsoma = n + nplus;
+    points = realloc(points, sizeof(point_t) * ((n_sum)));
+    checkMemPointArr(points);
 
-    pontos = realloc(pontos, sizeof(Ponto) * ((nsoma)));
-    verificaMemPonto(pontos);
-
-    for (int nlocal = n; nlocal < nsoma; nlocal++)
+    for (int current_size = n; current_size < n_sum; current_size++)
     {
-        pontos[nlocal].X = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[nlocal].X);
-        pontos[nlocal].Y = (int *)malloc(sizeof(int));
-        verificaMemint(pontos[nlocal].Y);
+        points[current_size].X = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[current_size].X);
+        points[current_size].Y = (int *)malloc(sizeof(int));
+        checkMemIntArr(points[current_size].Y);
     }
 
-    geraPontos(pontos, n, nsoma);
+    addPointsToArray(points, n, n_sum, flag);
 
-    return pontos;
+    return points;
 }
 
-void liberamemoriaGrupos(int **gruposR, int **grupos, int k)
+void freeClusterMemory(int **cluster, int **is_shorter_distance, int k)
 {
     for (int i = 0; i < k; i++)
     {
-        free(grupos[i]);
-        free(gruposR[i]);
+        free(is_shorter_distance[i]);
+        free(cluster[i]);
+    }
+}
+
+void hMeans(int argc, char *argv[])
+{
+
+    int n;
+    int k;
+    int iterations;
+    int flag;
+    int n_plus;
+    int current_size = 0;
+    int numfile = 0;
+    point_t *points;
+    FILE *pont_arq;
+
+    n = atoi(argv[1]);
+    k = atoi(argv[2]);
+    iterations = atoi(argv[3]);
+    flag = atoi(argv[4]);
+
+    double *sumX = newDoubleArr(k), *sumY = newDoubleArr(k);
+    int *count = newIntArr(k);
+    centroid_t *centroids = newCentroidArr(k);
+    resetIntArr(count, k);
+    centroid_t *old_centroids;
+    int **cluster, **is_shorter_distance;
+
+    if (n < k)
+    {
+        points = receiveAdditionalPoints(n, k, flag);
+    }
+    else
+    {
+        points = newPointArr(n);
+        points = addPointsToArray(points, 0, n, flag);
+    }
+
+    old_centroids = randomizeCentroids(points, n, k);
+    is_shorter_distance = processData(old_centroids, points, count, n, k);
+    cluster = createCluster(is_shorter_distance, count, n, k);
+    calculateNewCentroids(points, centroids, old_centroids, cluster, sumX, sumY, count, k);
+    freeClusterMemory(cluster, is_shorter_distance, k);
+
+    for (int l = 0; l < iterations; l++)
+    {
+        printf("\nL = %d\n", l);
+        is_shorter_distance = processData(centroids, points, count, n, k);
+        cluster = createCluster(is_shorter_distance, count, n, k);
+        resetSum(sumX, sumY, k);
+        calculateNewCentroids(points, centroids, old_centroids, cluster, sumX, sumY, count, k);
+
+        if (l == iterations - 1)
+            scanf("%d", &n_plus);
+
+        if (n_plus > 0)
+        {
+            points = addPoints(points, n, n_plus, flag);
+            n += n_plus;
+            n_plus = 0;
+            l = 0;
+        }
+
+        freeClusterMemory(cluster, is_shorter_distance, k);
     }
 }
 
 int main(int argc, char *argv[])
 {
-
-    int n = 0, k = 0, i = 0, j = 0, x = 0, vart = 0, vart2 = 0, **grupos, contapontos = 0, verifica = 0, stopcond = 0, nplus = 0, nsoma = 0, numfile = 0, printa = 0;
-    char str[5], nome[25] = "arquivo";
-    Ponto *pontos;
-    FILE *pont_arq;
-
-    srand(time(NULL));
-
-    scanf("%d", &n);
-    k = 14;
-    x = 10;
-
-    // n = atoi(argv[1]);
-    // k = atoi(argv[2]);
-
-    if (n < k * 2)
-    {
-        Ponto *pontosmenor = alocamemoria(n);
-        while (n < k * 2)
-        {
-            if (vart > 0)
-                pontosmenor = realocaMemoria(pontosmenor, vart, n);
-
-            pontosmenor = geraPontos(pontosmenor, vart, n);
-            scanf("%d", &vart2);
-            vart = n;
-            n += vart2;
-            printf("n=%d k=%d\n", n, k);
-        }
-
-        pontosmenor = realocaMemoria(pontosmenor, vart, n);
-        pontosmenor = geraPontos(pontosmenor, vart, n);
-
-        pontos = pontosmenor;
-
-        printf("Criando clusters...\n");
-    }
-    else
-        pontos = alocamemoria(n);
-
-    int *contVerifica = malloc(sizeof(int) * k);
-    int *contador = malloc(sizeof(int) * k);
-    CentroF *centroF = alocaMemCentroF(k);
-    CentroF *centroF2 = alocaMemCentroF(k);
-    Ponto *centrosmain = alocamemoria(k);
-
-    if (vart == 0)
-        pontos = geraPontos(pontos, vart, n);
-
-    grupos = agrupaPontos(pontos, n, k, contador, centrosmain);
-
-    int **gruposR = (int **)malloc(sizeof(int) * k * 2);
-    verificaMemIntP(gruposR);
-
-    for (i = 0; i < k; i++)
-    {
-        gruposR[i] = (int *)malloc(sizeof(int) * contador[i] * 2);
-        verificaMemint(gruposR[i]);
-    }
-
-    gruposR = atribuiVetores(gruposR, grupos, contador, n, k);
-
-    float *mediaX = (float *)malloc(sizeof(double) * k * 2);
-    verificaMemfloat(mediaX);
-
-    float *mediaY = (float *)malloc(sizeof(double) * k * 2);
-    verificaMemfloat(mediaY);
-
-    calculaMedia(mediaX, mediaY, pontos, gruposR, contador, centroF, centroF2, k, centrosmain);
-
-    liberamemoriaGrupos(gruposR, grupos, k);
-
-    for (int l = 0; l < x; l++)
-    {
-        grupos = reagrupapontos(centroF, pontos, k, n, contador, contVerifica);
-
-        for (i = 0; i < k; i++)
-        {
-            gruposR[i] = (int *)malloc(sizeof(int) * contador[i]);
-            verificaMemint(gruposR[i]);
-        }
-
-        gruposR = atribuiVetores(gruposR, grupos, contador, n, k);
-
-        zeraMedia(mediaX, mediaY, k);
-
-        calculaMedia(mediaX, mediaY, pontos, gruposR, contador, centroF, centroF2, k, centrosmain);
-
-        // verifica = 0;
-        // for (i = 0; i < k; i++)
-        //     if (contVerifica[i] != contador[i])
-        //         verifica++;
-
-        if (l == x - 1)
-        {
-            if (n % 300 == 0)
-                printf("n =%d %d\n", n, printa);
-
-            printa = 0;
-
-            scanf("%d", &nplus);
-        }
-
-        if (nplus > 0)
-        {
-            pontos = adicionapontos(pontos, n, nplus);
-            n += nplus;
-            printa++;
-            nplus = 0;
-            l = 0;
-        }
-
-        if (n % 501 == 0 && printa > 0)
-        {
-            sprintf(str, "%d", numfile);
-            strcat(nome, str);
-            pont_arq = fopen(nome, "w");
-
-            for (i = 0; i < k; i++)
-            {
-                fprintf(pont_arq, "%.2f;%.2f;0\n", *centroF[i].X, *centroF[i].Y);
-                for (j = 0; j < contador[i]; j++)
-                    fprintf(pont_arq, "%d;%d;1\n", *pontos[gruposR[i][j]].X, *pontos[gruposR[i][j]].Y);
-            }
-
-            fclose(pont_arq);
-            numfile++;
-            printa = 0;
-        }
-
-        liberamemoriaGrupos(gruposR, grupos, k);
-    }
+    hMeans(argc, argv);
 }
