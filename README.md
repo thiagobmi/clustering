@@ -15,6 +15,7 @@ With n being the number of points to be added to the next clustering.
 *Examples of the program behavior:*
 
 - This GIF shows the process of clustering given a constant number of points: 
+
 ![gif2](https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif)
 
 
@@ -22,6 +23,7 @@ With n being the number of points to be added to the next clustering.
 
 
 - This GIF shows the entire process of clustering given a increasingly number of points:
+
 ![grafico](https://user-images.githubusercontent.com/118558122/219134302-e03d4c72-2a2d-4667-a496-fdc1c834d8d5.gif)
 
 
