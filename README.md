@@ -12,7 +12,7 @@ The points coordinates must be writen in the input as:
 
 With n being the number of points to be added to the next clustering.
 
-Example of the program behavior:
+*Examples of the program behavior:*
 
 - This GIF shows the process of clustering given a constant number of points: 
 ![gif2](https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif)
