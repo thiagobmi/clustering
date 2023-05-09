@@ -1,4 +1,4 @@
-#include"../include/hMeans.h"
+#include "../include/hMeans.h"
 
 void hMeans(int argc, char *argv[])
 {
@@ -11,6 +11,8 @@ void hMeans(int argc, char *argv[])
     int numfile = 0;
     point_t *points;
     FILE *pont_arq;
+
+    n = 0, k = 0, iterations = 0, flag = 0;
 
     n = atoi(argv[1]);
     k = atoi(argv[2]);
@@ -40,6 +42,7 @@ void hMeans(int argc, char *argv[])
 
     for (int l = 0; l < iterations; l++)
     {
+        printf("Iteracao: %d\n", l);
         is_shorter_distance = processData(centroids, points, count, n, k);
         cluster = createCluster(is_shorter_distance, count, n, k);
         resetSum(sumX, sumY, k);
@@ -58,4 +61,6 @@ void hMeans(int argc, char *argv[])
 
         freeClusterMemory(cluster, is_shorter_distance, k);
     }
+    freePointArr(points, n);
+    freeCentroidsArr(centroids, k);
 }

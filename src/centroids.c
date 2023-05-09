@@ -1,9 +1,9 @@
-#include"../include/centroids.h"
-#include"../include/functions.h"
+#include "../include/centroids.h"
+#include "../include/functions.h"
 
-int checkMemCentroid(centroid_t *centro)
+int checkMemCentroid(centroid_t *centroid)
 {
-    if (centro == NULL)
+    if (centroid == NULL)
     {
         printf("ERRO\n");
         exit(0);
@@ -11,9 +11,19 @@ int checkMemCentroid(centroid_t *centro)
     }
 }
 
+void freeCentroidsArr(centroid_t *centroids, int k)
+{
+    for (int i = 0; i < k; i++)
+    {
+        free(centroids[i].X);
+        free(centroids[i].Y);
+        free(&centroids[i]);
+    }
+}
+
 centroid_t *newCentroidArr(int k)
 {
-    centroid_t *centroids =(centroid_t*) malloc(sizeof(centroid_t) * k);
+    centroid_t *centroids = (centroid_t *)malloc(sizeof(centroid_t) * k);
     checkMemCentroid(centroids);
 
     for (int i = 0; i < k; i++)

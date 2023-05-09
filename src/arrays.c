@@ -130,4 +130,6 @@ void freeClusterMemory(int **cluster, int **is_shorter_distance, int k)
         free(is_shorter_distance[i]);
         free(cluster[i]);
     }
+    free(cluster);
+    free(is_shorter_distance);
 }

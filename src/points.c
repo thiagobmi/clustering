@@ -100,6 +100,16 @@ point_t *receiveAdditionalPoints(int n, int k, int flag)
     return pointArr;
 }
 
+void freePointArr(point_t *points, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        free(points[i].X);
+        free(points[i].Y);
+        free(&points[i]);
+    }
+}
+
 point_t *addPoints(point_t *points, int n, int n_plus, int flag)
 {
     unsigned int n_sum = n + n_plus;
