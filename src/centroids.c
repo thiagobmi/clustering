@@ -11,31 +11,11 @@ int checkMemCentroid(centroid_t *centroid)
     }
 }
 
-void freeCentroidsArr(centroid_t *centroids, int k)
-{
-    for (int i = 0; i < k; i++)
-    {
-        free(centroids[i].X);
-        free(centroids[i].Y);
-        free(&centroids[i]);
-    }
-}
-
 centroid_t *newCentroidArr(int k)
 {
-    centroid_t *centroids = (centroid_t *)malloc(sizeof(centroid_t) * k);
+    centroid_t *centroids = (centroid_t *)calloc(k,sizeof(centroid_t));
     checkMemCentroid(centroids);
 
-    for (int i = 0; i < k; i++)
-    {
-        centroids[i].X = (float *)malloc(sizeof(float));
-        checkMemFloatArr(centroids[i].X);
-    }
-    for (int i = 0; i < k; i++)
-    {
-        centroids[i].Y = (float *)malloc(sizeof(float));
-        checkMemFloatArr(centroids[i].Y);
-    }
     return centroids;
 }
 
@@ -50,8 +30,8 @@ centroid_t *randomizeCentroids(point_t *points, int n, int k)
         random_point_index = getRandomPointIndex(random_point_index, rand_arr, count_rand, n);
         count_rand++;
         rand_arr[i] = random_point_index;
-        *old_centroids[i].X = *points[random_point_index].X;
-        *old_centroids[i].Y = *points[random_point_index].Y;
+        old_centroids[i].X = points[random_point_index].X;
+        old_centroids[i].Y = points[random_point_index].Y;
     }
     free(rand_arr);
     return old_centroids;

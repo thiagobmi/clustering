@@ -44,14 +44,14 @@ int checkMemIntMatrix(int **arr)
 
 float *newFloatArr(int size)
 {
-    float *arr = (float *)malloc(sizeof(float) * size);
+    float *arr = (float *)calloc(size,sizeof(float));
     checkMemFloatArr(arr);
     return arr;
 }
 
 float **newFloatMatrix(int rows, int cols)
 {
-    float **arr = (float **)malloc(sizeof(float *) * rows);
+    float **arr = (float **)calloc(rows,sizeof(float *));
 
     for (int i = 0; i < rows; i++)
         arr[i] = newFloatArr(cols);
@@ -62,7 +62,7 @@ float **newFloatMatrix(int rows, int cols)
 
 double *newDoubleArr(int size)
 {
-    double *arr = (double *)malloc(sizeof(double) * size);
+    double *arr = (double *)calloc(size,sizeof(double));
     return arr;
 }
 
@@ -77,14 +77,14 @@ void resetSum(double *sumX, double *sumY, int k)
 
 int *newIntArr(int size)
 {
-    int *arr = (int *)malloc(sizeof(int) * size);
+    int *arr = (int *)calloc(size,sizeof(int));
     checkMemIntArr(arr);
     return arr;
 }
 
 int **newIntMatrix(int rows, int cols)
 {
-    int **arr = (int **)malloc(sizeof(int) * rows * 2);
+    int **arr = (int **)calloc(rows,sizeof(int*));
     for (int i = 0; i < rows; i++)
         arr[i] = newIntArr(cols);
 
@@ -94,7 +94,7 @@ int **newIntMatrix(int rows, int cols)
 int **newCluster(int *count, int k)
 {
 
-    int **cluster = (int **)malloc(sizeof(int *) * k);
+    int **cluster = (int **)calloc(k,sizeof(int *));
     checkMemIntMatrix(cluster);
 
     for (int i = 0; i < k; i++)

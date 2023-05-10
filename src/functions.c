@@ -9,7 +9,7 @@ float **getDistances(point_t *points, centroid_t *centroids, int n, int k)
     {
         for (int i = 0; i < n; i++)
         {
-            distance[j][i] = sqrt(pow((*points[i].X - *centroids[j].X), 2) + pow((*points[i].Y - *centroids[j].Y), 2));
+            distance[j][i] = sqrt(pow((points[i].X - centroids[j].X), 2) + pow((points[i].Y - centroids[j].Y), 2));
         }
     }
     return distance;
@@ -17,7 +17,7 @@ float **getDistances(point_t *points, centroid_t *centroids, int n, int k)
 
 float *getShorterDistances(float **distance, int n, int k)
 {
-    int shorter;
+    int shorter=0;
     float *shorter_distance = newFloatArr(n);
 
     for (int i = 0; i < n; i++)
@@ -41,26 +41,26 @@ void calculateNewCentroids(point_t *points, centroid_t *centroids, centroid_t *o
     for (i = 0; i < k; i++)
         for (int j = 0; j < count[i]; j++)
         {
-            sumX[i] += *points[cluster[i][j]].X;
-            sumY[i] += *points[cluster[i][j]].Y;
+            sumX[i] += points[cluster[i][j]].X;
+            sumY[i] += points[cluster[i][j]].Y;
         }
 
     for (i = 0; i < k; i++)
     {
-        *centroids[i].X = (sumX[i] / count[i]);
-        *centroids[i].Y = (sumY[i] / count[i]);
+        centroids[i].X = (sumX[i] / count[i]);
+        centroids[i].Y = (sumY[i] / count[i]);
 
         if (count[i] == 0)
         {
-            *centroids[i].X = *old_centroids[i].X;
-            *centroids[i].Y = *old_centroids[i].Y;
+            centroids[i].X = old_centroids[i].X;
+            centroids[i].Y = old_centroids[i].Y;
         }
     }
 
     for (i = 0; i < k; i++)
     {
-        *old_centroids[i].X = *centroids[i].Y;
-        *old_centroids[i].Y = *centroids[i].Y;
+        old_centroids[i].X = centroids[i].Y;
+        old_centroids[i].Y = centroids[i].Y;
     }
 
     resetIntArr(count, k);
@@ -87,9 +87,9 @@ void printFile(centroid_t *centroids, point_t *points, int **cluster, char *str,
 
     for (int i = 0; i < k; i++)
     {
-        fprintf(pont_arq, "%.2f;%.2f;0\n", *centroids[i].X, *centroids[i].Y);
+        fprintf(pont_arq, "%.2f;%.2f;0\n", centroids[i].X, centroids[i].Y);
         for (int j = 0; j < count[i]; j++)
-            fprintf(pont_arq, "%d;%d;1\n", *points[cluster[i][j]].X, *points[cluster[i][j]].Y);
+            fprintf(pont_arq, "%d;%d;1\n", points[cluster[i][j]].X, points[cluster[i][j]].Y);
     }
 
     fclose(pont_arq);

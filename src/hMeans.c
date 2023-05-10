@@ -6,7 +6,7 @@ void hMeans(int argc, char *argv[])
     int k;
     int iterations;
     int flag;
-    int n_plus;
+    int n_plus=0;
     int current_size = 0;
     int numfile = 0;
     point_t *points;
@@ -61,6 +61,6 @@ void hMeans(int argc, char *argv[])
 
         freeClusterMemory(cluster, is_shorter_distance, k);
     }
-    freePointArr(points, n);
-    freeCentroidsArr(centroids, k);
+    free(points);
+    free(centroids);
 }

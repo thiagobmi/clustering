@@ -14,19 +14,8 @@ int checkMemPointArr(point_t *points)
 
 point_t *newPointArr(int n)
 {
-    point_t *points = (point_t *)malloc(sizeof(point_t) * n);
+    point_t *points = (point_t *)calloc(n,sizeof(point_t));
     checkMemPointArr(points);
-
-    for (int i = 0; i < n; i++)
-    {
-        points[i].X = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[i].X);
-    }
-    for (int i = 0; i < n; i++)
-    {
-        points[i].Y = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[i].Y);
-    }
     return points;
 }
 
@@ -37,10 +26,8 @@ point_t *reallocPointArr(point_t *points, int current_size, int n)
 
     for (int i = current_size; i < n; i++)
     {
-        points[i].X = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[i].X);
-        points[i].Y = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[i].Y);
+        points[i].X = 0;
+        points[i].Y = 0;
     }
 
     return points;
@@ -52,8 +39,8 @@ point_t *generateRandomPoints(point_t *points, int n, int n_sum)
     srand(time(NULL));
     for (n; n < n_sum; n++)
     {
-        *points[n].X = -2000 + rand() % 5000;
-        *points[n].Y = -2000 + rand() % 5000;
+        points[n].X = -2000 + rand() % 5000;
+        points[n].Y = -2000 + rand() % 5000;
     }
 
     return points;
@@ -63,9 +50,7 @@ point_t *readPoints(point_t *points, int n, int n_sum)
 {
 
     for (n; n < n_sum; n++)
-    {
-        scanf("%d %d", points[n].X, points[n].Y);
-    }
+        scanf("%d %d", &points[n].X, &points[n].Y);
 
     return points;
 }
@@ -100,30 +85,12 @@ point_t *receiveAdditionalPoints(int n, int k, int flag)
     return pointArr;
 }
 
-void freePointArr(point_t *points, int n)
-{
-    for (int i = 0; i < n; i++)
-    {
-        free(points[i].X);
-        free(points[i].Y);
-        free(&points[i]);
-    }
-}
-
 point_t *addPoints(point_t *points, int n, int n_plus, int flag)
 {
     unsigned int n_sum = n + n_plus;
 
     points = (point_t *)realloc(points, sizeof(point_t) * ((n_sum)));
     checkMemPointArr(points);
-
-    for (int current_size = n; current_size < n_sum; current_size++)
-    {
-        points[current_size].X = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[current_size].X);
-        points[current_size].Y = (int *)malloc(sizeof(int));
-        checkMemIntArr(points[current_size].Y);
-    }
 
     addPointsToArray(points, n, n_sum, flag);
 
