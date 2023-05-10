@@ -1,6 +1,6 @@
-#include "../include/hMeans.h"
+#include "../include/kmeans.h"
 
-void hMeans(int argc, char *argv[])
+void kmeans(int argc, char *argv[])
 {
     int n;
     int k;
@@ -61,6 +61,10 @@ void hMeans(int argc, char *argv[])
 
         freeClusterMemory(cluster, is_shorter_distance, k);
     }
+    free(count);
+    free(sumX);
+    free(sumY);
     free(points);
+    free(old_centroids);
     free(centroids);
 }

@@ -1,8 +1,8 @@
 #include<stdio.h>
-#include"./include/hMeans.h"
+#include"./include/kmeans.h"
 
 
 int main(int argc, char *argv[])
 {
-    hMeans(argc, argv);
+    kmeans(argc, argv);
 }
