@@ -22,7 +22,7 @@ With n being the number of points to be added to the next clustering.
 
 
 
-- This GIF shows the entire process of clustering given a increasingly number of points:
+- This GIF shows the entire process of clustering given an increasingly number of points:
 
 ![grafico](https://user-images.githubusercontent.com/118558122/219134302-e03d4c72-2a2d-4667-a496-fdc1c834d8d5.gif)
 
