@@ -1,29 +1,26 @@
-# clustering
-This is a K-means based clustering algorithm. n is the number of two-dimensional points and k is the number of centroids.
 
-This program works as a packet-oriented clustering algorithm. A initial number of points and centroids can be defined in the start of the execution. If the initial number of points is lower than the number of centroids, the program will wait until the number of centroids and points is at least equal to start processing.
+# Clustering
 
-After finishing the initial clustering, the program will be awaiting for more points to start clustering again.
-The points coordinates must be writen as the input in the following way:
+This repository contains a K-means based clustering algorithm designed to handle two-dimensional points and centroids. The algorithm operates in a packet-oriented manner, allowing for dynamic addition of points and centroids.
 
-```bash
-  n x1 y1 x2 y2 x3 y3 ... xn yn
-```
+## Description
 
-With n being the number of points to be added to the next clustering.
+The program begins by defining an initial number of points and centroids. If the initial number of points is less than the number of centroids, the program will wait until the counts are equal to start processing. After the initial clustering, the program continues to wait for more points to perform additional clustering operations.
 
-*Examples of the program behavior:*
+## Usage Examples
 
-- This GIF shows the process of clustering given a constant number of points: 
+### Constant Number of Points
 
-![gif2](https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif)
+The following GIF demonstrates the clustering process with a constant number of points:
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/118558122/219137153-73b8f11d-c2aa-40ab-a2aa-b53f0864356b.gif" alt="Constant number of points clustering">
+</p>
 
+### Increasing Number of Points
 
+The following GIF demonstrates the entire clustering process with an increasing number of points:
 
-
-- This GIF shows the entire process of clustering given an increasingly number of points:
-
-![grafico](https://user-images.githubusercontent.com/118558122/219134302-e03d4c72-2a2d-4667-a496-fdc1c834d8d5.gif)
-
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/118558122/219134302-e03d4c72-2a2d-4667-a496-fdc1c834d8d5.gif" alt="Increasing number of points clustering">
+</p>
